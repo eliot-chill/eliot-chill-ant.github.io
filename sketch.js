@@ -9,7 +9,7 @@ let ANTDOWN = 2;
 let ANTLEFT = 3;
 
 function setup() {
-  createCanvas(displayWidth, displayHeight);
+  createCanvas(round(window.innerWidth), round(window.innerHeight));
   grid = make2DArray(width, height);
   x = width/2;
   y = height/2;
