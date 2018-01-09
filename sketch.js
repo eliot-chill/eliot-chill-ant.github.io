@@ -66,7 +66,11 @@ function draw() {
       grid[x][y] = 0;
     }
 
-    stroke(color(255));
+
+		r = x/window.innerWidth*255;
+		g = y/window.innerHeight*255;
+
+    stroke(color(r, g, 255));
     if (grid[x][y] == 1) {
       stroke(color(0));
     }
