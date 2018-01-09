@@ -1,132 +1,87 @@
-var x, y, direction, rowWidth, rowHeight, boxes = [], slider;
-function setup(){
-	frameRate(120);
-	background(255);
+let grid;
+let x;
+let y;
+let dir;
 
-	direction = "UP";
-	rowWidth = 100;
-	rowHeight = 70;
-	x = rowWidth/2;
-	y = rowHeight/2;
+let ANTUP = 0;
+let ANTRIGHT = 1;
+let ANTDOWN = 2;
+let ANTLEFT = 3;
 
-	var w = rowWidth*10 + 10, h = rowHeight*10 + 10;
-
-	canvas = createCanvas(w, h);
-	canvas.addClass('sketch');
-
-	rectMode(CENTER);
-	stroke(0);
-	fill(255);
-	for (var i=0; i<rowHeight; i++){
-		for (var j=0; j<rowWidth; j++){
-			rect(10 + 10*j, 10 + 10*i, 10, 10);
-			boxes[j + i*rowWidth] = "WHITE";
-		}
-	}
-	//noLoop();
-
-	$("#shuffle").click(function(){
-		for (var i=0; i<20; i++){
-			boxes[floor(random(rowWidth*rowHeight))] = "BLACK";
-		}
-		for (var i=0; i<rowHeight; i++){
-			for (var j=0; j<rowWidth; j++){
-				if (boxes[j + i*rowWidth] == "WHITE"){
-					fill(255);
-				}else{
-					fill(0);
-				}
-				rect(10 + 10*j, 10 + 10*i, 10, 10);
-			}
-		}
-	});
-
-	$("#reset").click(function(){
-		for (var i=0; i<rowHeight; i++){
-			for (var j=0; j<rowWidth; j++){
-				rect(10 + 10*j, 10 + 10*i, 10, 10);
-				boxes[j + i*rowWidth] = "WHITE";
-			}
-		}
-		x = rowWidth/2;
-		y = rowHeight/2;
-		redraw();
-	});
-
-	var controls = select("#controls");
-	controls.style("width", w + "px");
+function setup() {
+  createCanvas(400, 400);
+  grid = make2DArray(width,height);
+  x = width/2;
+  y = height/2;
+  dir = ANTUP;
 }
 
-// The rule is: white square -> one step to the right
-//              black square -> one step to the left
-// Invert color each time.
-
-var currentPixel;
-function draw(){
-	var b;
-	currentPixel = boxes[x + y*rowWidth];
-	if (direction == "UP"){
-		if (currentPixel == "WHITE"){
-			boxes[x + y*rowWidth] = "BLACK";
-			x+=1;
-			direction = "RIGHT";
-		}else{
-			boxes[x + y*rowWidth] = "WHITE";
-			x-=1;
-			direction = "LEFT";
-		}
-	}else if (direction == "RIGHT"){
-		if (currentPixel == "WHITE"){
-			boxes[x + y*rowWidth] = "BLACK";
-			y+=1;
-			direction = "DOWN";
-		}else{
-			boxes[x + y*rowWidth] = "WHITE";
-			y-=1;
-			direction = "UP";
-		}
-	}else if (direction == "DOWN"){
-		if (currentPixel == "WHITE"){
-			boxes[x + y*rowWidth] = "BLACK";
-			x-=1;
-			direction = "LEFT";
-		}else{
-			boxes[x + y*rowWidth] = "WHITE";
-			x+=1;
-			direction = "RIGHT";
-		}
-	}else if (direction == "LEFT"){
-		if (currentPixel == "WHITE"){
-			boxes[x + y*rowWidth] = "BLACK";
-			y-=1;
-			direction = "UP";
-		}else{
-			boxes[x + y*rowWidth] = "WHITE";
-			y+=1;
-			direction = "DOWN";
-		}
-	}
-
-
-	if (boxes[x + y*rowWidth] == "WHITE"){
-		fill(0);
-	}else{
-		fill(255);
-	}
-	rect(10 + 10*x, 10 + 10*y, 10, 10);
-
-	if (x < 0 || y < 0 || x > rowWidth || y > rowHeight){
-		noLoop();
-		$("#message").text("Out of bounds!");
-	}
-
-	$(".sketch").click(function(){
-		loop();
-	});
+function turnRight() {
+  dir++;
+  if (dir > ANTLEFT) {
+    dir = ANTUP;
+  }
 }
 
-function keyPressed(){
-	if (keyCode === ENTER){
-		loop();
-	}
+function turnLeft() {
+  dir--;
+  if (dir < ANTUP) {
+    dir = ANTLEFT;
+  }
+}
+
+function moveForward() {
+  if (dir == ANTUP) {
+    y--;
+  } else if (dir == ANTRIGHT) {
+    x++;
+  } else if (dir == ANTDOWN) {
+    y++;
+  } else if (dir == ANTLEFT) {
+    x--;
+  }
+
+  if (x > width-1) {
+    x = 0;
+  } else if (x < 0) {
+    x = width-1;
+  }
+  if (y > height-1) {
+    y = 0;
+  } else if (y < 0) {
+    y = height-1;
+  }
+}
+
+
+function draw() {
+  strokeWeight(1);
+  for (let n = 0; n < 100; n++) {
+    let state = grid[x][y];
+    if (state == 0) {
+      turnRight();
+      grid[x][y] = 1;
+    } else if (state == 1) {
+      turnLeft();
+      grid[x][y] = 0;
+    }
+
+    stroke(color(255));
+    if (grid[x][y] == 1) {
+      stroke(color(0));
+    }
+    point(x, y);
+    moveForward();
+  }
+}
+
+function make2DArray(cols, rows) {
+  let arr = new Array(cols);
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = new Array(rows);
+    for (let j = 0; j < arr[i].length; j++) {
+      arr[i][j] = 0;
+    }
+  }
+  return arr;
 }

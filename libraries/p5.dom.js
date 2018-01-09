@@ -190,7 +190,7 @@
       return new p5.MediaElement(elt);
     } else if ( elt.tagName === "SELECT" ){
       return createSelect( new p5.Element(elt) );
-    } 
+    }
     else {
       return new p5.Element(elt);
     }
@@ -1880,7 +1880,7 @@
    * @example
    * <div><code>
    *
-   * //This example both starts 
+   * //This example both starts
    * //and stops a sound sample
    * //when the user clicks the canvas
    *
@@ -1923,7 +1923,7 @@
    *     } else {
    *       //loop our sound element until we
    *       //call ele.stop() on it.
-   *       ele.loop(); 
+   *       ele.loop();
    *
    *       sampleIsPlaying = true;
    *       text("Click to stop!", width/2, height/2);
@@ -1988,7 +1988,7 @@
    *     } else {
    *       //loop our sound element until we
    *       //call ele.pause() on it.
-   *       ele.loop(); 
+   *       ele.loop();
    *
    *       sampleIsPlaying = true;
    *       text("Click to pause!", width/2, height/2);
