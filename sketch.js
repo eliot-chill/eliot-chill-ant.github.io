@@ -9,10 +9,10 @@ let ANTDOWN = 2;
 let ANTLEFT = 3;
 
 function setup() {
-  createCanvas(round(window.innerWidth), round(window.innerHeight));
+  createCanvas(window.innerWidth, window.innerHeight);
   grid = make2DArray(width, height);
-  x = width/2;
-  y = height/2;
+  x = round(width/2);
+  y = round(height/2);
   dir = ANTUP;
 }
 
