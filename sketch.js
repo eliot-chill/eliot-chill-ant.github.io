@@ -12,8 +12,8 @@ function setup() {
   colorMode(HSB);
   createCanvas(windowWidth, windowHeight);
   grid = make2DArray(width,height);
-  x = windowWidth/2;
-  y = windowHeight/2;
+  x = round(windowWidth/2);
+  y = round(windowHeight/2);
   dir = ANTUP;
 }
 
