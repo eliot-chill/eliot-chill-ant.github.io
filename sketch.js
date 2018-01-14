@@ -9,10 +9,11 @@ let ANTDOWN = 2;
 let ANTLEFT = 3;
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
+  colorMode(HSB);
+  createCanvas(windowWidth, windowHeight);
   grid = make2DArray(width,height);
-  x = width/2;
-  y = height/2;
+  x = windowWidth/2;
+  y = windowHeight/2;
   dir = ANTUP;
 }
 
@@ -55,6 +56,7 @@ function moveForward() {
 
 
 function draw() {
+
   strokeWeight(1);
   for (let n = 0; n < 100; n++) {
     let state = grid[x][y];
@@ -68,9 +70,9 @@ function draw() {
 
     stroke(
 			color(
-				x/window.innerWidth*255,
-				y/window.innerHeight*255,
-				255
+				frameCount % 255,
+			 75,
+       100
 			));
     if (grid[x][y] == 1) {
       stroke(color(0));
